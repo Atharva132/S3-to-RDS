@@ -2,13 +2,29 @@ data "aws_ecr_repository" "gdtc-image_ecr_repo" {
   name = "gdtc-image"
 }
 
-data "aws_db_instance" "myrds" {
-  db_instance_identifier = "gdtcdb"
-}
 resource "aws_s3_bucket" "gdtc-task-bucket" {
     bucket = "gdtc-task-bucket"
     tags = {
       Name = "GDTC Bucket"
+    }
+}
+
+resource "aws_db_instance" "myrds" {
+    allocated_storage   = var.DB_Storage
+    storage_type        = "gp2"
+    identifier          = "gdtcdb"
+    db_name             = "mydb"
+    engine              = "mysql"
+    engine_version      = "8.0.35"
+    instance_class      = "db.t3.micro"
+    username            = var.DB_USER
+    password            = var.DB_PASSWORD
+    publicly_accessible = true
+    skip_final_snapshot = true
+    vpc_security_group_ids = ["sg-0a6c1cf887701ff62", "sg-05b76b0fd64c226bb"]
+
+    tags = {
+        Name = "MyRDS"
     }
 }
 
@@ -19,10 +35,11 @@ resource "aws_lambda_function" "s3_to_rds_function" {
   package_type  = "Image"
 
   role = aws_iam_role.s3_to_rds_function_role.arn
+  depends_on = [aws_db_instance.myrds]
 
   environment {
     variables = {
-        DB_HOST = "${data.aws_db_instance.myrds.endpoint}"
+        DB_HOST = "${aws_db_instance.myrds.endpoint}"
         DB_PORT = var.DB_PORT
         DB_NAME = var.DB_NAME
         DB_USER = var.DB_USER
