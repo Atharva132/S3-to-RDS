@@ -43,7 +43,7 @@ resource "aws_lambda_function" "s3_to_rds_function" {
 
   environment {
     variables = {
-        DB_HOST = "${rds_endpoint_without_port}"
+        DB_HOST = "${local.rds_endpoint_without_port}"
         DB_PORT = var.DB_PORT
         DB_NAME = var.DB_NAME
         DB_USER = var.DB_USER
