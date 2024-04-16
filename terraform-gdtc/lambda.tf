@@ -2,6 +2,9 @@ data "aws_ecr_repository" "gdtc-image_ecr_repo" {
   name = "gdtc-image"
 }
 
+data "aws_db_instance" "myrds" {
+  db_instance_identifier = "gdtcdb"
+}
 resource "aws_s3_bucket" "gdtc-task-bucket" {
     bucket = "gdtc-task-bucket"
     tags = {
@@ -19,7 +22,7 @@ resource "aws_lambda_function" "s3_to_rds_function" {
 
   environment {
     variables = {
-        DB_HOST = var.DB_HOST
+        DB_HOST = "${data.aws_db_instance.myrds.endpoint}"
         DB_PORT = var.DB_PORT
         DB_NAME = var.DB_NAME
         DB_USER = var.DB_USER
