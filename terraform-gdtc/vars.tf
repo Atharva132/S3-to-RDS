@@ -10,9 +10,6 @@ variable "DB_Storage" {
   default = 20
 }
 
-variable "DB_HOST" {
-}
-
 variable "DB_PORT" {
   default = "3306"
 }
