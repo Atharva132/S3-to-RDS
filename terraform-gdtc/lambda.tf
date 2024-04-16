@@ -28,6 +28,10 @@ resource "aws_db_instance" "myrds" {
     }
 }
 
+locals {
+  rds_endpoint_without_port = replace(aws_db_instance.myrds.endpoint, ":[0-9]+$", "")
+}
+
 resource "aws_lambda_function" "s3_to_rds_function" {
   function_name = "s3_to_rds"
   timeout       = 5 # seconds
@@ -39,7 +43,7 @@ resource "aws_lambda_function" "s3_to_rds_function" {
 
   environment {
     variables = {
-        DB_HOST = "${aws_db_instance.myrds.endpoint}"
+        DB_HOST = "${rds_endpoint_without_port}"
         DB_PORT = var.DB_PORT
         DB_NAME = var.DB_NAME
         DB_USER = var.DB_USER
