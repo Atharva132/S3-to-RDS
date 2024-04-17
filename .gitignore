@@ -1,6 +1,6 @@
 .env
 terraform-gdtc/.terraform
 terraform-gdtc/.terraform.lock.hcl
-terraform-gdtc/.terraform.tfstate
-terraform-gdtc/.terraform.tfstate.backup
+terraform-gdtc/terraform.tfstate
+terraform-gdtc/terraform.tfstate.backup
 iris_dataset
