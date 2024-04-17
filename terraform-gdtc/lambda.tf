@@ -13,7 +13,7 @@ resource "aws_db_instance" "myrds" {
     allocated_storage   = var.DB_Storage
     storage_type        = "gp2"
     identifier          = "gdtcdb"
-    db_name             = "mydb"
+    db_name             = var.DB_NAME
     engine              = "mysql"
     engine_version      = "8.0.35"
     instance_class      = "db.t3.micro"
