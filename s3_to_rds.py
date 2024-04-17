@@ -58,7 +58,7 @@ def lambda_handler(event, context):
     try:
         cursor.executemany(mysql_insert_query,results)
         conn.commit()
-        print(cursor.rowcount, "Record inserted successfully into employee table")
+        print(cursor.rowcount, "Record inserted successfully into iris table")
     except mysql.connector.Error as e:
         conn.rollback()
         print("Error inserting data into MySQL:", e)
