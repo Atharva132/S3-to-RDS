@@ -2,6 +2,7 @@ data "aws_ecr_repository" "gdtc-image_ecr_repo" {
   name = "gdtc-image"
 }
 
+
 resource "aws_s3_bucket" "gdtc-task-bucket" {
     bucket = "gdtc-task-bucket"
     tags = {
