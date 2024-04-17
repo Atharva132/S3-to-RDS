@@ -30,7 +30,7 @@ resource "aws_db_instance" "myrds" {
 }
 
 locals {
-  rds_endpoint_without_port = replace(aws_db_instance.myrds.endpoint, ":[0-9]+$", "")
+  rds_endpoint_without_port = replace(aws_db_instance.myrds.endpoint, ":3306", "")
 }
 
 resource "aws_lambda_function" "s3_to_rds_function" {
@@ -103,4 +103,8 @@ resource "aws_iam_role_policy_attachment" "rds_access_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy_attachment" {
   role       = aws_iam_role.s3_to_rds_function_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+output "endpoint" {
+  value = local.rds_endpoint_without_port
 }
