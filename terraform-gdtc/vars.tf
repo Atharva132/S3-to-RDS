@@ -2,10 +2,6 @@ variable "REGION" {
   default = "us-east-1"
 }
 
-variable "DATASET_PATH" {
-  default = "/home/atharva132/gdtc/iris_dataset"
-}
-
 variable "DB_Storage" {
   default = 20
 }
